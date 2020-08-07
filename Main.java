@@ -1,25 +1,41 @@
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 
 public class Main {
     public static int counter=1;
-    public static void main(String[] args) {
+    public static void main(String[] args1) {
+        String[] valid = new String[]{"be-BY", "ru-RU", "en-US"};
+        Faker faker = new Faker(new Locale(args1[0]));
+        if (Arrays.asList(valid).contains(args1[0])){
+            try {
+                    if (args1.length == 2) {
+                        for (int i = 0; i < Integer.parseInt(args1[1]); i++) {
+                            GenerateMistake(DataToOutput(args1[0],faker), 0, args1[0]);
 
-        GenerateMistake(DataToOutput("ru-RU"), 2,"ru-RU");
+                        }
+                    } else if (args1.length == 3) {
+                        for (int i = 0; i < Integer.parseInt(args1[1]); i++) {
+                            GenerateMistake(DataToOutput(args1[0],faker), Double.parseDouble(args1[2]), args1[0]);
+                        }
+                    } else System.out.println("Pls enter valid data");
 
-
+            } catch (NumberFormatException e) {
+                System.out.println("Pls enter valid data");
+            }
+        } else System.out.println("Pls enter valid data");
         }
 
 
-    public static String DataToOutput(String region) {
-        Locale locale = new Locale(region);
-        Faker faker = new Faker(locale);
+    public static String DataToOutput(String region, Faker faker) {
+
         String fullname = faker.name().fullName();
         String streetAddress = faker.address().fullAddress();
         String phone = faker.phoneNumber().phoneNumber();
+        faker = null;
         return fullname + "; " + streetAddress + "; " + phone;
 
     }
@@ -79,7 +95,7 @@ public class Main {
 
 
 
-        }
+    }
 
     public static Character GetAlphabet(String region){
         List<Character> alphabet = new ArrayList<>();
